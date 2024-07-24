@@ -1,3 +1,7 @@
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules["pysqlite3"]
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
