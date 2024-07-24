@@ -3,9 +3,11 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 import vectors_db
-from openai import OpenAI
 import streamlit as st
-import os
+
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 CHROMA_PATH = "chroma"
 
@@ -30,6 +32,7 @@ def main():
     if not openai_api_key:
         st.info("Please add your OpenAI API key to continue.", icon="🗝️")
     else:
+        # Generate the data vectors store.
         vectors_db.generate_data_store(api_key=openai_api_key)
 
         # Initialize the embedding function and the Chroma DB.
