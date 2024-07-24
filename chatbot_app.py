@@ -1,15 +1,7 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
-from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 import vectors_db
 import streamlit as st
-
-CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
@@ -33,7 +25,7 @@ def main():
         st.info("Please add your OpenAI API key to continue.", icon="🗝️")
     else:
         # Generate the data vectors store.
-        vectors_db.generate_data_store(api_key=openai_api_key)
+        db = vectors_db.generate_data_store(api_key=openai_api_key)
 
         # Create a session state variable to store the chat messages. This ensures that the messages persist across reruns.
         if "messages" not in st.session_state:
@@ -46,10 +38,6 @@ def main():
 
         # Create a chat input field to allow the user to enter a message. This will display automatically at the bottom of the page.
         if query_text := st.chat_input("Write your query here..."):
-
-            # Initialize the embedding function and the Chroma DB.
-            embedding_function = OpenAIEmbeddings(api_key=openai_api_key)
-            db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
             # Store and display the current prompt.
             st.session_state.messages.append({"role": "user", "content": query_text})

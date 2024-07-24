@@ -1,20 +1,15 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules["pysqlite3"]
-
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from langchain_chroma import Chroma
-import os
-import shutil
+from langchain_community.vectorstores import FAISS
 import PyPDF2
 
-CHROMA_PATH = "chroma"
+FAISS_PATH = "faiss_db"
 
 def generate_data_store(api_key: str):
     document = load_document()
     chunks = split_text(document)
-    save_to_chroma(chunks, api_key)
+    db = save_to_faiss(chunks, api_key)
+    return db
 
 
 def load_document():
@@ -37,12 +32,9 @@ def split_text(document):
     return chunks
 
 
-def save_to_chroma(chunks, api_key):
-    # Clear out the database first.
-    if os.path.exists(CHROMA_PATH):
-        shutil.rmtree(CHROMA_PATH)
-
+def save_to_faiss(chunks, api_key):
     # Create a new DB from the document.
-    Chroma.from_texts(
-        chunks, OpenAIEmbeddings(api_key=api_key), persist_directory=CHROMA_PATH
+    db = FAISS.from_texts(
+        chunks, OpenAIEmbeddings(api_key=api_key)
     )
+    return db
