@@ -4,7 +4,7 @@ sys.modules['sqlite3'] = sys.modules["pysqlite3"]
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 import os
 import shutil
 import PyPDF2
@@ -43,9 +43,6 @@ def save_to_chroma(chunks, api_key):
         shutil.rmtree(CHROMA_PATH)
 
     # Create a new DB from the document.
-    db = Chroma.from_texts(
+    Chroma.from_texts(
         chunks, OpenAIEmbeddings(api_key=api_key), persist_directory=CHROMA_PATH
     )
-    db.persist()
-
-    print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")

@@ -35,10 +35,6 @@ def main():
         # Generate the data vectors store.
         vectors_db.generate_data_store(api_key=openai_api_key)
 
-        # Initialize the embedding function and the Chroma DB.
-        embedding_function = OpenAIEmbeddings(api_key=openai_api_key)
-        db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
-
         # Create a session state variable to store the chat messages. This ensures that the messages persist across reruns.
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -50,12 +46,17 @@ def main():
 
         # Create a chat input field to allow the user to enter a message. This will display automatically at the bottom of the page.
         if query_text := st.chat_input("Write your query here..."):
+
+            # Initialize the embedding function and the Chroma DB.
+            embedding_function = OpenAIEmbeddings(api_key=openai_api_key)
+            db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+
             # Store and display the current prompt.
             st.session_state.messages.append({"role": "user", "content": query_text})
             with st.chat_message("user"):
                 st.markdown(query_text)
 
-            # Search the DB.
+            # Search in DB.
             results = db.similarity_search_with_relevance_scores(query_text, k=3)
             if len(results) == 0 or results[0][1] < 0.7:
                 st.write("Unable to find matching results.")
