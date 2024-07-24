@@ -4,3 +4,4 @@ langchain-openai==0.1.17
 langchain_community==0.2.10 
 PyPDF2==3.0.1 
 langchain_chroma==0.1.2
+chromadb==0.5.5
