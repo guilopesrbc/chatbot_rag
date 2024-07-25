@@ -6,3 +6,4 @@ PyPDF2==3.0.1
 langchain_chroma==0.1.2
 chromadb==0.5.5
 faiss-cpu==1.8.0.post1
+pandas==2.2.2
