@@ -16,13 +16,37 @@ O projeto foi desenvolvido a partir da linguagem de programação Python, se uti
 
 ### Arquitetura do Projeto
 
-1. **Base de conhecimento e indexação**: O documento "procuradoria_geral_normas.pdf" é alocado no diretório "data" e extraído no código com áuxilio da biblioteca PyPDF2. Posteriormente, o documento é fragmentado em trechos de até 1000 caracteres, chamados "chunks" e utilizado da biblioteca FAISS, que permite rápida recuperação via similaridade de dados vetoriais (Embeddings), para indexar os documentos de forma eficiente, .
+1. **Base de conhecimento e indexação**: O documento "procuradoria_geral_normas.pdf" é alocado no diretório "data" e extraído no código com áuxilio da biblioteca PyPDF2. Posteriormente, o documento é fragmentado em trechos de até 1000 caracteres, chamados "chunks" e utilizado da biblioteca FAISS, que permite rápida recuperação via similaridade de dados vetoriais (Embeddings), para indexar os documentos de forma eficiente.
 2. **Embeddings**: Os embeddings são gerados usando a API do OpenAI, transformam os chunks em conjuntos de dados vetoriais e são armazenados com a ajuda do FAISS.
 3. **Pipeline de Recuperação**: O LangChain é utilizado para construir o pipeline de recuperação, fazendo a busca de similaridade de chunks no conjunto de dados baseado no embendding da pergunta enviada.
 4. **Modelo de linguagem**: Com o retorno de chunks de maior similaridade o prompt contextualizado é construído e enviado via API para o modelo de linguagem OpenAI gpt-3.5-turbo. Retornando por fim uma resposta ao usuário.
 5. **Interface e Deploy**: A interface de usuário e deploy foram desenvolvidas via Streamlit.
 
 ## Deploy do projeto
-Disponível no [link](https://rag-chatbot-guilopesrbc.streamlit.app/)
+Disponível no [link](https://rag-chatbot-guilopesrbc.streamlit.app/), PS: necessário o fornecimento de OpenAI API Key.
+![image](https://github.com/user-attachments/assets/e8761af4-f1c2-47ca-b083-e8f6edd28294)
+
 
 ## Avaliação de desempenho
+A avaliação de desempenho do chatbot foi feita a partir do script, disponível [aqui](https://github.com/guilopesrbc/chatbot_rag/blob/main/evaluate_accuracy.py), que analisa a acurácia da resposta do chatbot comparada às respostas reais acerca da mesma pergunta, essa avaliação é feita via similaridade de embeddings entre as duas respostas e a acurácia é definida e normalizada utilizando o cálculo (1 - score). O resultado dessa avaliação é armazenado em um [dataframe](https://github.com/guilopesrbc/chatbot_rag/blob/main/evaluation_dt.csv) via pandas e calculado a média para acurácia total. A Acurácia média foi de aproximadamente 86%.
+
+## Como testar localmente
+Para realizar testes localmente, siga estas etapas abaixo:
+
+Clone o Repositório:
+```
+git clone https://github.com/guilopesrbc/chatbot_rag.git
+```
+Instale as dependências:
+```
+pip install -r requirements.txt
+```
+### Testar ChatBot APP
+Execute o streamlit:
+```
+streamlit run main.py
+```
+### Executar avaliação de desempenho
+Execute o arquivo python "[evaluate_accuracy.py](https://github.com/guilopesrbc/chatbot_rag/blob/main/evaluate_accuracy.py)"
+
+Em ambos os testes é necessário o fornecimento de OpenAI API Key, para teste no ChatBot APP bastar fornecer na caixa de texto solicitante, já na avaliação de desempenho deve ser colocada via terminal. 
