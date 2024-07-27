@@ -28,7 +28,7 @@ Disponível no [link](https://rag-chatbot-guilopesrbc.streamlit.app/), PS: neces
 
 
 ## Avaliação de desempenho
-A avaliação de desempenho do chatbot foi feita a partir do script, disponível [aqui](https://github.com/guilopesrbc/chatbot_rag/blob/main/evaluate_accuracy.py), que analisa a acurácia da resposta do chatbot comparada às respostas reais acerca da mesma pergunta, essa avaliação é feita via similaridade de embeddings entre as duas respostas e a acurácia é definida e normalizada utilizando o cálculo (1 - score). O resultado dessa avaliação é armazenado em um [dataframe](https://github.com/guilopesrbc/chatbot_rag/blob/main/evaluation_dt.csv) via pandas e calculado a média para acurácia total. A Acurácia média foi de aproximadamente 86%.
+A avaliação de desempenho do chatbot foi feita a partir do script, disponível [aqui](https://github.com/guilopesrbc/chatbot_rag/blob/main/evaluate_accuracy.py), que analisa a acurácia da resposta do chatbot comparada às respostas reais acerca da mesma pergunta, essa avaliação é feita via cálculo de similaridade de embeddings entre as duas respostas e a acurácia é definida e normalizada utilizando o cálculo (1 - score). O resultado dessa avaliação é armazenado em um dataframe pandas e exportado em um arquivo .CSV disponível no [link](https://github.com/guilopesrbc/chatbot_rag/blob/main/evaluation_dt.csv), após isso é calculado a média para acurácia total. A Acurácia média foi de aproximadamente 86%.
 
 ## Como testar localmente
 Para realizar testes localmente, siga estas etapas abaixo:
